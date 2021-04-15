@@ -1,11 +1,28 @@
 {
   "name": "wolibot",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "woli bot for hackatonia 2021",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "server": "nodemon server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alphonse92/wolibot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alphonse92/wolibot/issues"
+  },
+  "homepage": "https://github.com/alphonse92/wolibot#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "slackbots": "^1.2.0"
+  }
 }
