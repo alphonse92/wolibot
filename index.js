@@ -9,25 +9,29 @@ const NEUTRAL_EMOJI = ':yum:';
 const {
   BOT_TOKEN,
   SAY_HELLO_AT_START,
+  CHANNELS
 } = process.env
 
 const SAY_HELLO = SAY_HELLO_AT_START === 'true';
+
+const AVAILABLE_CHANNELS = CHANNELS.split(',')
 
 const bot = new SlackBot({
   token: `${BOT_TOKEN}`,
   name: 'woli'
 })
 
+
+const sayHello = channel => bot.postMessageToChannel(
+  'wolitest',
+  `Hi! I'm Woli and I'll guard the healthy of your conversation. I will watch you every you write in this channel!`,
+  { icon_emoji: NEUTRAL_EMOJI }
+);
+
 // Start Handler
 bot.on('start', () => {
   console.log('Bot had started')
-  if (SAY_HELLO) {
-    bot.postMessageToChannel(
-      'wolitest',
-      'Im fucking alive (no toxic)',
-      { icon_emoji: NEUTRAL_EMOJI }
-    );
-  }
+  if (SAY_HELLO) AVAILABLE_CHANNELS.forEach(sayHello)
 });
 
 // Error Handler
@@ -37,74 +41,6 @@ bot.on('error', (err) => {
 
 // Message Handler
 bot.on('message', (data) => {
-  if (data.type !== 'message') {
-    return;
-  }
+  if (data.type !== 'message') return;
   console.log("mesage received", data)
-  // handleMessage(data.text);
 })
-
-// Response Handler
-function handleMessage(message) {
-  if (message.includes(' inspire me')) {
-    inspireMe()
-  } else if (message.includes(' random joke')) {
-    randomJoke()
-  } else if (message.includes(' help')) {
-    runHelp()
-  }
-}
-
-// inspire Me
-function inspireMe() {
-  axios.get('https://raw.githubusercontent.com/BolajiAyodeji/inspireNuggets/master/src/quotes.json')
-    .then(res => {
-      const quotes = res.data;
-      const random = Math.floor(Math.random() * quotes.length);
-      const quote = quotes[random].quote
-      const author = quotes[random].author
-
-      const params = {
-        icon_emoji: ':male-technologist:'
-      }
-
-      bot.postMessageToChannel(
-        'random',
-        `:zap: ${quote} - *${author}*`,
-        params
-      );
-
-    })
-}
-
-// Random Joke
-function randomJoke() {
-  axios.get('https://api.chucknorris.io/jokes/random')
-    .then(res => {
-      const joke = res.data.value;
-
-      const params = {
-        icon_emoji: ':smile:'
-      }
-
-      bot.postMessageToChannel(
-        'random',
-        `:zap: ${joke}`,
-        params
-      );
-
-    })
-}
-
-// Show Help
-function runHelp() {
-  const params = {
-    icon_emoji: ':question:'
-  }
-
-  bot.postMessageToChannel(
-    'random',
-    `Type *@inspirenuggets* with *inspire me* to get an inspiring techie quote, *random joke* to get a Chuck Norris random joke and *help* to get this instruction again`,
-    params
-  );
-}
