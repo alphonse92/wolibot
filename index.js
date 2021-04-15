@@ -15,17 +15,18 @@
     const {
       BOT_TOKEN,
       SAY_HELLO_AT_START,
-      CHANNELS
+      CHANNELS,
+      DEBUG
     } = process.env
 
     const SAY_HELLO = SAY_HELLO_AT_START === 'true';
     const AVAILABLE_CHANNELS = CHANNELS.split(',')
-
     // START CLIENTS
     const bot = new SlackBot({ token: `${BOT_TOKEN}`, name: 'woli' })
     const web = new WebClient(BOT_TOKEN)
 
     // FUNCTIONS
+    const debug = () => { if (DEBUG === 'true') { } }
     const sayHello = channel => bot.postMessageToChannel(
       channel,
       `Hi! I'm Woli and I'll guard the healthy of your conversation. I will watch you every you write in this channel!`,
@@ -55,7 +56,7 @@
 
     const sendUserWarning = async (userId, message, toxicityInfo) => {
       const { confidence_score } = toxicityInfo;
-      const warningMessage = `I'm almost sure (about ${confidence_score} %) your message "${message}" is ofensive. Please stay calm and breath before you atack other people`
+      const warningMessage = `I'm almost sure (about ${Number(confidence_score) * 100} %) your message "${message}" is ofensive. Please stay calm and breath before you atack other people`
       // bot.postMessageToUser(userId, warningMessage, { icon_emoji: NEUTRAL_EMOJI });
       const result = await web.chat.postMessage({ text: warningMessage, channel: userId });
       return result
@@ -63,7 +64,7 @@
 
     // EVENTS
     bot.on('start', () => {
-      console.log('Bot had started at',AVAILABLE_CHANNELS)
+      console.log('Bot had started at', AVAILABLE_CHANNELS)
       if (SAY_HELLO) AVAILABLE_CHANNELS.forEach(sayHello)
     });
 
@@ -74,6 +75,7 @@
 
     // Message Handler
     bot.on('message', async (data) => {
+
       const { text, user, type } = data;
 
       if (type !== 'message') return;
