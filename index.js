@@ -27,7 +27,7 @@
 
     // FUNCTIONS
     const sayHello = channel => bot.postMessageToChannel(
-      'wolitest',
+      channel,
       `Hi! I'm Woli and I'll guard the healthy of your conversation. I will watch you every you write in this channel!`,
       { icon_emoji: NEUTRAL_EMOJI }
     );
@@ -63,7 +63,7 @@
 
     // EVENTS
     bot.on('start', () => {
-      console.log('Bot had started')
+      console.log('Bot had started at',AVAILABLE_CHANNELS)
       if (SAY_HELLO) AVAILABLE_CHANNELS.forEach(sayHello)
     });
 
