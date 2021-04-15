@@ -4,8 +4,15 @@
   "description": "woli bot for hackatonia 2021",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.7",
+    "slackbots": "^1.2.0"
+  }
 }

@@ -4,23 +4,31 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
+const ALERT_EMOJI = ':face_with_symbols_on_mouth:';
+const NEUTRAL_EMOJI = ':yum:';
+const {
+  BOT_TOKEN,
+  SAY_HELLO_AT_START,
+} = process.env
+
+const SAY_HELLO = SAY_HELLO_AT_START === 'true';
+
 const bot = new SlackBot({
-  token: `${process.env.BOT_TOKEN}`,
+  token: `${BOT_TOKEN}`,
   name: 'woli'
 })
 
 // Start Handler
 bot.on('start', () => {
-  const params = {
-    icon_emoji: ':robot_face:'
+  console.log('Bot had started')
+  if (SAY_HELLO) {
+    bot.postMessageToChannel(
+      'wolitest',
+      'Im fucking alive (no toxic)',
+      { icon_emoji: NEUTRAL_EMOJI }
+    );
   }
-
-  bot.postMessageToChannel(
-    'wolitest',
-    'Im fucking alive (no toxic)',
-    params
-  );
-})
+});
 
 // Error Handler
 bot.on('error', (err) => {
@@ -32,7 +40,8 @@ bot.on('message', (data) => {
   if (data.type !== 'message') {
     return;
   }
-  handleMessage(data.text);
+  console.log("mesage received", data)
+  // handleMessage(data.text);
 })
 
 // Response Handler
