@@ -80,6 +80,8 @@
 
       if (type !== 'message') return;
 
+      console.log(data)
+
       const toxicityInfo = await checkToxicity(text);
 
       if (toxicityInfo) {
