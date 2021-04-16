@@ -1,8 +1,19 @@
 const Alerts = require('./Alerts');
 
+const joinNames = (array = []) => {
+  const names = [];
+  array.forEach(commandObject => {
+    commandObject.commandListNames.forEach(commandName => {
+      names.push(`${commandObject.name} ${commandName}`)
+    })
+  })
+
+  return names;
+};
+
 module.exports = {
   commandList: {
-    ...Alerts.commandList,
+    [Alerts.name]: {...Alerts.commandList}
   },
-  commandListNames: [...Alerts.commandListNames]
+  commandListNames: joinNames([Alerts])
 }

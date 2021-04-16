@@ -4,6 +4,7 @@
     const dotenv = require('dotenv')
     const toxicityChecker = require('./src/ToxicityChecker');
     const database = require('./src/database');
+    const CommandProcessor = require('./src/CommandProcessor');
 
     const { WebClient } = require('@slack/web-api');
 
@@ -50,21 +51,6 @@
       return result
     }
 
-    const censoredMessage = async  (channel, ts) => {
-      const defaultMessage = `this message was censored because includes toxic messages`;
-      const result = await web.chat.update({
-        channel,
-        ts,
-        text: defaultMessage,
-      });
-
-      return result;
-    };
-
-    const richText = async () => {
-
-    }
-
     // EVENTS
     bot.on('start', () => {
       console.log('Bot had started at', AVAILABLE_CHANNELS)
@@ -79,15 +65,18 @@
     // Message Handler
     bot.on('message', async (data) => {
 
-      const { text, user, type, ts, channel, message = {}} = data;
+      const { text, user, type, ts, channel, message = {}, bot_id} = data;
 
-      if (type !== 'message' || text === WELCOME_MESSAGE) return;
+      if (type !== 'message' || bot_id || !user || !text) return;
+
+      if (CommandProcessor.isACommand(text)) {
+        const result = await CommandProcessor.execute(text, web, data);
+        console.log(`\n\n\nindex.js:90`, result);
+        return result;
+      }
 
       console.log('\n\n\n',data)
 
-      if (text === "/mario-test") {
-        return await richText(channel);
-      }
       const msgToCheck = text ? text : message.text;
       const channelToNotify = text ? user : message.user;
 
@@ -98,13 +87,13 @@
         await database.write({
           text,
           result,
+          channel,
           votation: toxicityInfo.votation,
         });
 
         if (result === 'TOXIC'){
           await sendUserWarning(channelToNotify, msgToCheck, toxicityInfo);
         }
-        // if (result === 'TOXIC') await censoredMessage(channel, ts);
       }
     });
 
