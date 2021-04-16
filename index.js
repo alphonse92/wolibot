@@ -2,7 +2,6 @@
   async () => {
     const SlackBot = require('slackbots');
     const dotenv = require('dotenv')
-    const fetch = require('node-fetch');
     const toxicityChecker = require('./src/ToxicityChecker');
     const database = require('./src/database');
 
@@ -26,7 +25,7 @@
     const SAY_HELLO = SAY_HELLO_AT_START === 'true';
     const AVAILABLE_CHANNELS = CHANNELS.split(',')
     // START CLIENTS
-    const bot = new SlackBot({ token: `${BOT_TOKEN}`, name: 'woli' })
+    const bot = new SlackBot({ token: `${BOT_TOKEN}`, name: 'woli' });
     const web = new WebClient(BOT_TOKEN)
 
     // FUNCTIONS
@@ -42,27 +41,6 @@
       GOODBYE_MESSAGE,
       { icon_emoji: NEUTRAL_EMOJI }
     );
-
-    const checkToxicity = async (message) => {
-
-      // Please call all the sugested models and log it answers to choose the right one
-
-      const response = await fetch('https://predict-ailab.uruit.com/text/classification/predict/49fb832a-9dfa-11eb-b2b9-8697a6fa86bd', {
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ "text": message })
-      });
-      try {
-        const json = response.json();
-        return json;
-      } catch (e) {
-        console.log('something went wrong', e);
-        return null;
-      }
-    }
 
     const sendUserWarning = async (userId, message, toxicityInfo) => {
       const { confidence_score } = toxicityInfo;
@@ -101,7 +79,7 @@
     // Message Handler
     bot.on('message', async (data) => {
 
-      const { text, user, type, ts, channel } = data;
+      const { text, user, type, ts, channel, message = {}} = data;
 
       if (type !== 'message' || text === WELCOME_MESSAGE) return;
 
@@ -110,8 +88,10 @@
       if (text === "/mario-test") {
         return await richText(channel);
       }
+      const msgToCheck = text ? text : message.text;
+      const channelToNotify = text ? user : message.user;
 
-      const toxicityInfo = await toxicityChecker(text);
+      const toxicityInfo = await toxicityChecker(msgToCheck);
       if (toxicityInfo) {
         const { result } = toxicityInfo;
         await database.write({
@@ -121,7 +101,7 @@
         });
 
         if (result === 'TOXIC'){
-          await sendUserWarning(user, text, toxicityInfo);
+          await sendUserWarning(channelToNotify, msgToCheck, toxicityInfo);
         }
         // if (result === 'TOXIC') await censoredMessage(channel, ts);
       }

@@ -4,7 +4,7 @@
   "description": "woli bot for hackatonia 2021",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon index.js --ignore database.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

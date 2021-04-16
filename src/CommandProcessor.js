@@ -1,4 +1,6 @@
-const COMMAND_LIST = []
+const COMMAND_LIST = [{
+
+}]
 
 // something cool is comming
 
