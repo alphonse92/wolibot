@@ -50,7 +50,6 @@ const useDefaultOption = arrayResponses => {
 
 
 const pickBestOption = (arrayResponses) => {
-  console.log(`index.js:52 ${ALLOW_VOTATION}`)
   if(!ALLOW_VOTATION) return useDefaultOption(arrayResponses);
 
   const toxicOptions = arrayResponses

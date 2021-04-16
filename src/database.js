@@ -11,6 +11,12 @@ const write = async (json) => {
   await fs.writeFileSync(FILE_PATH, JSON.stringify(array));
 }
 
+const read = async () => {
+  const data = await fs.readFileSync(FILE_PATH);
+  return JSON.parse(data.toString());
+}
+
 module.exports = {
   write,
+  read,
 }
