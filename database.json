@@ -1,0 +1,1 @@
+[{"text":"merde","toxicityInfo":{"processing_time":0.303,"confidence_score":0.852,"result":"HEALTHY","strategy":"bert 30k","discarded":[{"processing_time":0.117,"confidence_score":0.988,"result":"HEALTHY","strategy":"TFIDF"},{"processing_time":0.4,"confidence_score":0.891,"result":"HEALTHY","strategy":"disilBert 30k"}]}}]
