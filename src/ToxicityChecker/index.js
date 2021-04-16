@@ -1,4 +1,8 @@
 const fetch = require('node-fetch');
+require('dotenv').config();
+const {
+  ALLOW_VOTATION
+} = process.env
 
 const STRATEGIES_NAMES = {
   TFIDF: 'TFIDF',
@@ -36,9 +40,18 @@ const mapByName = array => {
   }, {})
 }
 
+const useDefaultOption = arrayResponses => {
+  const defaultOption = arrayResponses.find(currentResponse =>  currentResponse.strategy === STRATEGIES_NAMES.BERT_30K)
+  return {
+    ...defaultOption,
+    votation: mapByName(arrayResponses)
+  }
+};
+
 
 const pickBestOption = (arrayResponses) => {
-  console.log(JSON.stringify(arrayResponses));
+  console.log(`index.js:52 ${ALLOW_VOTATION}`)
+  if(!ALLOW_VOTATION) return useDefaultOption(arrayResponses);
 
   const toxicOptions = arrayResponses
     .filter(item => item.result === 'TOXIC')
@@ -77,11 +90,7 @@ const pickBestOption = (arrayResponses) => {
     }
   }
 
-  const defaultOption = arrayResponses.find(currentResponse =>  currentResponse.strategy === STRATEGIES_NAMES.BERT_30K)
-  return {
-    ...defaultOption,
-    votation: mapByName(arrayResponses)
-  }
+  return useDefaultOption(arrayResponses);
 }
 
 module.exports = async (message) => {

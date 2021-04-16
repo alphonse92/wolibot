@@ -92,6 +92,7 @@
       const channelToNotify = text ? user : message.user;
 
       const toxicityInfo = await toxicityChecker(msgToCheck);
+      console.log(`index.js:95`, toxicityInfo);
       if (toxicityInfo) {
         const { result } = toxicityInfo;
         await database.write({
