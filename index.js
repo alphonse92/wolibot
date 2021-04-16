@@ -47,7 +47,7 @@
 
       // Please call all the sugested models and log it answers to choose the right one
 
-      const response = await fetch('https://predict-ailab.uruit.com/text/classification/predict/30d948b8-9d4c-11eb-aa0f-521c6757c414', {
+      const response = await fetch('https://predict-ailab.uruit.com/text/classification/predict/49fb832a-9dfa-11eb-b2b9-8697a6fa86bd', {
         method: 'POST',
         headers: {
           'accept': 'application/json',
