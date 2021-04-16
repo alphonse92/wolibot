@@ -114,7 +114,11 @@
       const toxicityInfo = await toxicityChecker(text);
       if (toxicityInfo) {
         const { result } = toxicityInfo;
-        await database.write({text, toxicityInfo});
+        await database.write({
+          text,
+          result,
+          votation: toxicityInfo.votation,
+        });
 
         if (result === 'TOXIC'){
           await sendUserWarning(user, text, toxicityInfo);
