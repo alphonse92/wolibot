@@ -1,6 +1,21 @@
 # wolibot
 Bot for slack - woli - hackatonia 2021
 
+# Dependencies
+   to create reports wolibot uses Anychart and require all their dependencies:
+   1. [ImageMagic](https://imagemagick.org/index.php)
+   2. [librsvg](https://github.com/GNOME/librsvg)
+   
+   to install these dependencies you can execute the next commands based in your system operative:
+
+   ##### Linux
+   `apt-get install imagemagick librsvg2-dev librsvg2-bin`
+   ##### Mac OS
+   `brew install imagemagick librsvg`
+   ##### Windows
+   * [imagemagick](https://www.imagemagick.org/script/download.php)
+   * [GTK+ bundle](http://win32builder.gnome.org/gtk+-bundle_3.6.4-20131201_win64.zip)
+   * [RSVG lib](https://downloads.sourceforge.net/project/tumagcc/converters/rsvg-convert.exe?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Ftumagcc%2Ffiles%2Frsvg-convert.exe%2Fdownload&ts=1500995628&use_mirror=netix)
 
 # Installation:
 
