@@ -38,3 +38,23 @@ The bot will listen on channels where the bot is already joined.
 
 1. go to slack channel
 2. tag the bot in the channel and it will join to it
+
+# Commands
+WOLI allows you to send some special messages to answer with more info
+
+```//woli alerts list```
+with this command, you can get the list of all messages tracked.
+   ##### params
+   1. `--result` this parameter allows filter depending on the result options available  are (`toxic`, `healthy`)
+      ```//woli alerts list --result=toxic```
+   2. `--complete` return the raw data (evaluation of each message)
+
+preview:
+![graph](https://uruit1-my.sharepoint.com/:i:/g/personal/mario_nieto_uruit_com/Eb7e-4xMohdMqi3RwyYdwW8BGF2sm0UJ1UPTPtB5ETfDaA?e=b6ULU2)
+
+```//woli alerts report```
+this command returns  a graph with the toxic messages tracked by each channel where WOLI was added in comparison to the normal messages
+   ##### params
+   1. `--byUser` this parameter gets you the graph of the users that ended toxic messages
+preview:
+![graph by user](https://uruit1-my.sharepoint.com/:i:/g/personal/mario_nieto_uruit_com/EfW1MMxEWhZEl5_rHAsKOFEBoKn6jDYo6ahE5rBvMirPOQ?e=Fub3cj)      
