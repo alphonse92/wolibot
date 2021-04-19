@@ -88,6 +88,7 @@
           text,
           result,
           channel,
+          userID: channelToNotify,
           votation: toxicityInfo.votation,
         });
 
